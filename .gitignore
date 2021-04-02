@@ -1,0 +1,5 @@
+_old
+cache/
+logs/
+.htaccess
+config.inc.php
