@@ -15,7 +15,7 @@ Paramter | Function | Example
 `update` | Updates cache file | `https://ical.myserver.tld/?update`
 `update` | Shows debug output in Browser | `https://ical.myserver.tld/?debug`
 `verbose` | Extends the debug in update mode output. Works only with update and debug | `https://ical.myserver.tld/?update&debug&verbose`
-`wife` | See [Wife-Mode](##Wife-Mode) | `https://ical.myserver.tld/?wifemode`
+`wife` | See [Wife-Mode](#wife-mode) | `https://ical.myserver.tld/?wifemode`
 
 ## Wife-Mode
 
