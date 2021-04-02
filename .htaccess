@@ -1,0 +1,7 @@
+RewriteEngine on
+
+# Prevent direct access
+RewriteRule			^/?cache/(.*) - [F,L]
+RewriteRule			^/?libs/(.*) - [F,L]
+RewriteRule			^/?logs/(.*) - [F,L]
+RewriteRule			^/.git/(.*) - [F,L]
