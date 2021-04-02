@@ -24,6 +24,9 @@ if (isset($_GET['debug'])) {
 	}
 }
 
+if (isset($_GET['wife'])) {
+	$icalews->wifemode = true;
+}
 
 if (isset($_GET['update'])) {
 

@@ -44,16 +44,11 @@ class Main
 		$this->config->cachedir = $config['cachedir'] ?? "cache";
 		$this->config->start_date = new DateTime($config['timerange_start'] ?? "-90 days");
 		$this->config->end_date = new DateTime($config['timerange_end'] ?? "+180 days");
-		$this->config->wifemode_tag = $config['wifemode_tag'] ?? "";
 		$this->config->version = $config['version'] ?? Client::VERSION_2016;
 
 		if ($this->config->host == "") {
 			$this->log("Missing host. Check config");
 			exit;
-		}
-
-		if ($this->config->wifemode_tag != "" && isset($_GET[$this->config->wifemode_tag])) {
-			$this->wifemode = true;
 		}
 
 		$this->log("+++ Start iCalEws +++");
