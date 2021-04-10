@@ -38,10 +38,13 @@ class Main
 
 	public function __construct($config)
 	{
+		$this->config =
+			new \stdClass();
 		$this->config->host = $config['host'] ?? "";
 		$this->config->realm = $config['realm'] ?? "iCal Auth";
 		$this->config->logdir = $config['logdir'] ?? "logs";
 		$this->config->cachedir = $config['cachedir'] ?? "cache";
+		$this->config->accesstoken = $config['accesstoken'] ?? "";
 		$this->config->start_date = new DateTime($config['timerange_start'] ?? "-90 days");
 		$this->config->end_date = new DateTime($config['timerange_end'] ?? "+180 days");
 		$this->config->version = $config['version'] ?? Client::VERSION_2016;
@@ -52,6 +55,15 @@ class Main
 		}
 
 		$this->log("+++ Start iCalEws +++");
+	}
+
+	public function checkToken()
+	{
+		if ($_GET['accesstoken'] !== $this->config->accesstoken) {
+			header('HTTP/1.0 401 Unauthorized');
+			echo 'HTTP/1.0 401 Unauthorized';
+			exit;
+		}
 	}
 
 	public function httpauth()
@@ -155,7 +167,7 @@ class Main
 
 
 
-		$this->log("End getitems. Got " . count($this->items) . " CalendarItems in " . (microtime() - $start) . "s");
+		$this->log("End getitems. Got " . count($this->items) . " CalendarItems in " . ($start - microtime()) . "s");
 		if ($this->verbose) {
 			$this->log("", $this->items);
 		}
@@ -334,18 +346,26 @@ class Main
 		return date("Ymd", strtotime($date)) . "T" . date("His", strtotime($date)) . "Z";
 	}
 
-	public function log($string, $data = "")
+	public function log($msg, $data = "")
 	{
 		//$headers = apache_request_headers();
-		$file = $this->config->logdir . "/log_" . date("Y") . "-" . date("m") . "-" . date("d") . ".txt";
-		$string = date("c") . "\t" . $_SERVER['REMOTE_ADDR'] . "\t" . $string;
+
+		$output = "iCalEws\t" . date("c") . "\t" . $_SERVER['REMOTE_ADDR'] . "\t" . $msg;
 		if ($data != "") {
-			$string .= print_r($data, true);
+			$output .= print_r($data, true);
 		}
-		$string .= "\n";
+		$output .= "\n";
 		if ($this->debug) {
-			echo $string;
+			echo $output;
 		}
-		file_put_contents($file, $string, FILE_APPEND);
+
+		if ($this->config->logdir != "") {
+			$out = fopen('php://stdout', 'w'); //output handler
+			fputs($out, $output); //writing output operation
+			fclose($out); //closing handler
+		} else {
+			$file = $this->config->logdir . "/log_" . date("Y") . "-" . date("m") . "-" . date("d") . ".txt";
+			file_put_contents($file, $output, FILE_APPEND);
+		}
 	}
 }

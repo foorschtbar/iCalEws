@@ -5,6 +5,8 @@ require_once 'config.inc.php';
 
 $icalews = new foorschtbar\iCalEws\Main($config);
 
+$icalews->checkToken();
+
 $icalews->httpauth();
 
 if (isset($_GET['debug'])) {
@@ -28,15 +30,21 @@ if (isset($_GET['wife'])) {
 	$icalews->wifemode = true;
 }
 
-if (isset($_GET['update'])) {
+
+if (isset($_GET['cachesave'])) {
 
 	$icalews->getitems();
 	$icalews->getevents();
 	$icalews->cachesave();
 	echo "ReturnStatus:NOERROR";
-} else {
+} elseif (isset($_GET['cacheload'])) {
 
 	$icalews->cacheload();
+	$icalews->icalbuild();
+	$icalews->icalout();
+} else {
+	$icalews->getitems();
+	$icalews->getevents();
 	$icalews->icalbuild();
 	$icalews->icalout();
 }

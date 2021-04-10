@@ -5,3 +5,6 @@ RewriteRule			^/?cache/(.*) - [F,L]
 RewriteRule			^/?libs/(.*) - [F,L]
 RewriteRule			^/?logs/(.*) - [F,L]
 RewriteRule			^/.git/(.*) - [F,L]
+
+# Normal
+RewriteRule			^/?([a-zA-Z0-9]{56})/?$ ews.php?accesstoken=$1 [L,QSA]

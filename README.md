@@ -11,11 +11,12 @@ You can control the script with the following HTTP-Get parameters:
 
 Paramter | Function | Example
 --- | --- | ---
-(none) | Generates iCal output from cache file | `https://ical.myserver.tld`
-`update` | Updates cache file | `https://ical.myserver.tld/?update`
-`update` | Shows debug output in Browser | `https://ical.myserver.tld/?debug`
-`verbose` | Extends the debug in update mode output. Works only with update and debug | `https://ical.myserver.tld/?update&debug&verbose`
-`wife` | See [Wife-Mode](#wife-mode) | `https://ical.myserver.tld/?wifemode`
+(none) | Generates iCal output direct from EWS backend | `https://ical.myserver.tld/<accesstoken>`
+`cachesave` | Updates cache file | `https://ical.myserver.tld/<accesstoken>?cachesave`
+`cacheload` | Generates iCal output from cache file | `https://ical.myserver.tld/<accesstoken>?update`
+`debug` | Shows debug output in Browser | `https://ical.myserver.tld/<accesstoken>?debug`
+`verbose` | Extends the debug in update mode output. Works only with update and debug | `https://ical.myserver.tld/<accesstoken>?update&debug&verbose`
+`wife` | See [Wife-Mode](#wife-mode) | `https://ical.myserver.tld/<accesstoken>?wifemode`
 
 ## Wife-Mode
 
