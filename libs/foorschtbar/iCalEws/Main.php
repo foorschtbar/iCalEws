@@ -33,7 +33,6 @@ class Main
 
 	public $debug = false;
 	public $verbose = false;
-	public $cat_blacklist = array();
 	public $wifemode = false;
 
 	public function __construct($config)
@@ -44,6 +43,7 @@ class Main
 		$this->config->realm = $config['realm'] ?? "iCal Auth";
 		$this->config->logdir = $config['logdir'] ?? "logs";
 		$this->config->cachedir = $config['cachedir'] ?? "cache";
+		$this->config->cat_blacklist = $config['cat_blacklist'] ?? array();
 		$this->config->accesstoken = $config['accesstoken'] ?? "";
 		$this->config->start_date = new DateTime($config['timerange_start'] ?? "-90 days");
 		$this->config->end_date = new DateTime($config['timerange_end'] ?? "+180 days");
@@ -167,7 +167,7 @@ class Main
 
 
 
-		$this->log("End getitems. Got " . count($this->items) . " CalendarItems in " . ($start - microtime()) . "s");
+		$this->log("End getitems. Got " . count($this->items) . " CalendarItems in " . (microtime() - $start) . "s");
 		if ($this->verbose) {
 			$this->log("", $this->items);
 		}
@@ -181,7 +181,7 @@ class Main
 		$this->log("Start getevents.");
 
 		$use_cat_blacklist = false;
-		if (count($this->cat_blacklist) > 0) {
+		if (count($this->config->cat_blacklist) > 0) {
 			$use_cat_blacklist = true;
 		}
 
@@ -192,7 +192,7 @@ class Main
 			unset($categories);
 			if (!empty($item->Categories->String)) {
 				foreach ($item->Categories->String as $category) {
-					if ($use_cat_blacklist && in_array($category, $this->cat_blacklist)) {
+					if ($use_cat_blacklist && in_array($category, $this->config->cat_blacklist)) {
 						$filter++;
 						continue 2;
 					}
