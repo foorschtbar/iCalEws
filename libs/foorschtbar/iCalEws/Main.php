@@ -208,7 +208,8 @@ class Main
 				"organizer" => $item->Organizer->Mailbox->Name,
 				"location" => $item->Location,
 				"categories" => $categories,
-				"status" => $item->LegacyFreeBusyStatus
+				"status" => $item->LegacyFreeBusyStatus,
+				"myresponse" =>  $item->MyResponseType
 			);
 			$count++;
 		}
@@ -260,10 +261,10 @@ class Main
 
 				$summary = $event['summary'];
 
-				switch (strtolower($event['status'])) {
-					case "tentative": // tentative=vorläufig
-						$summary = "[Terminanfrage] " . $summary;
-						break;
+				if (strtolower($event['myresponse']) == "noresponsereceived") {
+					$summary = "[Request] " . $summary;
+				} elseif (strtolower($event['status']) == "tentative") {
+					$summary = "[Tentative] " . $summary;
 				}
 
 				$uid = $event['uid'];
